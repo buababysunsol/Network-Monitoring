@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View OID</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>OID</th>
+        <th>Index</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for oid in oids %}
+    <tr>
+    <td>{{ oid.oid }}</td>
+    <td>{{ oid.oid_index }}</td>
+    <td>{{ oid.value }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
