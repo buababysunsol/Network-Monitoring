@@ -76,9 +76,15 @@ WSGI_APPLICATION = 'network_monitoring.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.sqlite3'
+        # 'ENGINE': 'django_mongodb_engine',
+        # 'NAME': 'monitordb',
+        # 'USER': '',
+        # 'PASSWORD': '',
+        # 'HOST': 'localhost',
+        # 'PORT': '27017',
+        # 'SUPPORTS_TRANSACTION': False,
+    },
 }
 
 
