@@ -7,12 +7,13 @@ import random
 import os
 import timeit
 
-def couter_thread(ip):
+
+def counter_thread(ip):
     name = current_thread().getName()
     print("{}: {} START".format(name, ip))
-    for i in range (10000000):
+    for i in range(10000000):
         x = i + 1 * 22 - 123 + 123 * 99
-    print ("{}: {} END".format(name, ip))
+    print("{}: {} END".format(name, ip))
 
 
 def counter_mp(ip):
@@ -65,6 +66,7 @@ def run_mp_concurrent_pool_test(ip):
 
         wait(threads)
 
+
 def main():
     ip = ipaddress.IPv4Network("192.168.1.0/29")
 
@@ -94,6 +96,7 @@ def main():
     run_mp_concurrent_pool_test(ip)
     usage_time = time.time() - start_time
     print("Usage time: {:.3f}".format(usage_time))
+
 
 if __name__ == '__main__':
     main()
