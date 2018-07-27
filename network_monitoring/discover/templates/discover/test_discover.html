@@ -1,10 +1,196 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css'>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
+    <link rel="stylesheet" href="{% static 'discover/discover_css.css' %}">
     <title>Discover Devices</title>
 </head>
 <body>
 
+<div class="page-wrapper cool-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">AIT - monitor</a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+
+            <div class="sidebar-header">
+                <div class="user-info">
+                        <span class="user-name">
+                            <strong>Bunpitcha</strong>
+                        </span>
+                    <span class="user-role">Administrator</span>
+                    <span class="user-status">
+                            <i class="fa fa-circle"></i>
+                            <span>Online</span>
+                        </span>
+                </div>
+            </div>
+
+            <div class="sidebar-search">
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control search-menu" placeholder="Search...">
+                        <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="header-menu">
+                        <span>General</span>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Dashboard 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Dashboard 2</a>
+                                </li>
+                                <li>
+                                    <a href="#">Dashboard 3</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-search"></i>
+                            <span>Discover</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Auto Discover</a>
+                                </li>
+                                <li>
+                                    <a href="#">Scan IP range</a>
+                                </li>
+                                <li>
+                                    <a href="#">Add Devices</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="far fa-id-card"></i>
+                            <span>Node Profile</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">General</a>
+                                </li>
+                                <li>
+                                    <a href="#">Panels</a>
+                                </li>
+                                <li>
+                                    <a href="#">Tables</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-globe"></i>
+                            <span>Maps</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <a href="#">
+                        <i class="fa fa-bell"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-cog"></i>
+                        <span class="badge-sonar"></span>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-power-off"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="form-group col-md-12">
+
+                    <h2>Discover IP</h2>
+                    <p>Please enter network address and subnetmask</p>
+
+                    <form action="" method="get">
+                        Network Address Cidr : <input type="text" name="network" placeholder='ex. 192.168.0.0/24'><br><br>
+
+                        <input type="submit" value="scan" class="btn btn-secondary">
+                    </form>
+
+
+                </div>
+
+                {% if result %}
+                    <div class="form-group col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><center>IP</center></th>
+                                <th><center>alive</center></th>
+                                <th><center>Add</center></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for ip, alive in result.items %}
+                                <tr>
+                                    <td><center>{{ ip }}</center></td>
+                                    <td><center>{{ alive }}</center></td>
+                                    <td> <center><input type="button" value="add" class="btn btn-swipe"></center> </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                {% endif %}
+            </div>
+            <hr>
+
+
+        </div>
+    </main>
+
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js'></script>
+
+
+    <script src="{% static 'discover/disJS.js' %}"></script>
 </body>
 </html>
