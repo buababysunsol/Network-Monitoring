@@ -142,14 +142,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="form-group col-md-12">
-
+                    <br>
                     <h2>Discover IP</h2>
                     <p>Please enter network address and subnetmask</p>
 
                     <form action="" method="get">
                         Network Address Cidr : <input type="text" name="network" placeholder='ex. 192.168.0.0/24'><br><br>
 
-                        <input type="submit" value="scan" class="btn btn-secondary">
+                        <input type="submit" value="scan" class="btn btn-secondary btn-set">
                     </form>
 
 
@@ -159,32 +159,44 @@
                     <div class="form-group col-md-12">
                         <table class="table table-striped">
                             <thead>
-                            <tr>
-                                <th><center>IP</center></th>
-                                <th><center>alive</center></th>
-                                <th><center>Add</center></th>
-                            </tr>
+
+                                <tr>
+
+                                        <th><center>IP</center></th>
+                                        <th><center>alive</center></th>
+                                        <th><center>Add</center></th>
+
+                                </tr>
+
                             </thead>
                             <tbody>
                             {% for ip, alive in result.items %}
-                                <tr>
-                                    <td><center>{{ ip }}</center></td>
-                                    <td><center>{{ alive }}</center></td>
-                                    <td> <center><input type="button" value="add" class="btn btn-swipe"></center> </td>
-                                </tr>
+
+                                    {% if alive == True %}
+
+                                    <tr>
+                                            <td><center>{{ ip }}</center></td>
+                                            <td><center>{{ alive }}</center></td>
+                                            <td><center><input type="button" value="add" class="btn btn-swipe"></center></td>
+
+                                     </tr>
+
+                                    {% endif %}
                             {% endfor %}
+
                             </tbody>
                         </table>
+                        <input type="button" value="add all" class="btn1 btn1-swipe">
 
                     </div>
                 {% endif %}
             </div>
             <hr>
 
-
         </div>
-    </main>
 
+    </main>
+    </div>
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js'></script>
@@ -192,5 +204,6 @@
 
 
     <script src="{% static 'discover/disJS.js' %}"></script>
+
 </body>
 </html>
