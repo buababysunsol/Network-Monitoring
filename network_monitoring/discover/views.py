@@ -40,6 +40,7 @@ def ping_all(ips):
     return result
 
 
+#discover main function ip from network addr and subnet mask
 def discover_network(request):
     network = request.GET.get('network')
     if network:
@@ -50,3 +51,24 @@ def discover_network(request):
         result = {}
     # Render
     return render(request, "discover/test_discover.html", {"result": result})
+
+
+#scan ip main function for ip range
+def scan_network(request):
+
+    start_ip = request.GET.get('start_')
+    end_ip = request.GET.get('end_')
+    if start_ip:
+        print("Start ip : {}".format(start_ip))
+        print("End ip : {}".format(end_ip))
+    else:
+        pass
+    return render(request, "discover/scan_ip_range.html")
+
+
+# def add_database(request):
+#
+#     submit = request.GET.get('add')
+#
+#
+#     return render(request, "discover/test_discover.html")
