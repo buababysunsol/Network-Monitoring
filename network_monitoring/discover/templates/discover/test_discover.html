@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{% static 'discover/discover_css.css'%}">
     <meta charset="UTF-8">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css'>
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
-    <link rel="stylesheet" href="{% static 'discover/discover_css.css' %}">
+
     <title>Discover Devices</title>
 </head>
 <body>
@@ -82,10 +83,10 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="#">Auto Discover</a>
+                                    <a href="{% url 'discover-ip' %}">Auto Discover</a>
                                 </li>
                                 <li>
-                                    <a href="#">Scan IP range</a>
+                                    <a href="{% url 'scan-ip' %}">Scan IP range</a>
                                 </li>
                                 <li>
                                     <a href="#">Add Devices</a>
@@ -146,9 +147,8 @@
                     <h2>Discover IP</h2>
                     <p>Please enter network address and subnetmask</p>
 
-                    <form action="" method="get">
-                        Network Address Cidr : <input type="text" name="network" placeholder='ex. 192.168.0.0/24'><br><br>
-
+                    <form method="get">
+                        Network Address Cidr : <input type="text" name="network" placeholder='ex. 192.168.0.0/24' value="{{ network|default_if_none:"" }}"><br><br>
                         <input type="submit" value="scan" class="btn btn-secondary btn-set">
                     </form>
 
@@ -186,9 +186,10 @@
 
                             </tbody>
                         </table>
-                        <input type="button" value="add all" class="btn1 btn1-swipe">
 
+                        <input type="button" value="add all" class="btn1 btn1-swipe">
                     </div>
+
                 {% endif %}
             </div>
             <hr>
