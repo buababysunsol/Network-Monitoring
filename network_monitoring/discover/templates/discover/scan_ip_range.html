@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,10 +83,10 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="#">Auto Discover</a>
+                                    <a href="{% url 'discover-ip' %}">Auto Discover</a>
                                 </li>
                                 <li>
-                                    <a href="#">Scan IP range</a>
+                                    <a href="{% url 'scan-ip' %}">Scan IP range</a>
                                 </li>
                                 <li>
                                     <a href="#">Add Devices</a>
@@ -149,15 +150,60 @@
                     <p>Please enter IP range</p>
 
                     <form action="" method="get">
-                        IP range : <input type="text" name="network" placeholder='ex. 192.168.0.0/24'>
-                        to : <input type="text" name="network" placeholder='ex. 192.168.0.0/24'>
+                        IP range : <input type="text" name="start_ip" placeholder='ex. 192.168.0.0/24'>
+                        to : <input type="text" name="end_ip" placeholder='ex. 192.168.0.0/24'>
                         <input type="submit" value="scan" class="btn btn-secondary btn-set">
                     </form>
 
-                    
+                    {% if result %}
+
+                        <div class="form-group col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+
+                                <tr>
+
+                                        <th><center>IP</center></th>
+                                        <th><center>alive</center></th>
+                                        <th><center>Add</center></th>
+
+                                </tr>
+
+                            </thead>
+
+
+                        <tbody>
+                            {% for ip, alive in result.items %}
+
+                                    {% if alive == True %}
+
+                                    <tr>
+                                            <td><center>{{ ip }}</center></td>
+                                            <td><center>{{ alive }}</center></td>
+                                            <td><center><input type="button" value="add" class="btn btn-swipe"></center></td>
+
+                                     </tr>
+
+                                    {% endif %}
+                            {% endfor %}
+                        </tbody>
+
+                    {% endif %}
+                </table>
+
+
 
     </main>
 
-</div>
+
+
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js'></script>
+
+
+    <script src="{% static 'discover/disJS.js' %}"></script>
 </body>
 </html>
