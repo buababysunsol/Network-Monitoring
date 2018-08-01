@@ -5,5 +5,6 @@ urlpatterns = [
     path('network/', views.discover_network, name='discover-ip'),
     path('scan/network/', views.scanning_ip, name='scan-ip'),
     path('add/network/', views.add_database, name='add-ip'),
-    path('add/', views.add_ip, name='add')
+    path('views/', views.views_ip, name='view_all_ip'),
+    path('add/', views.add_ip, name='add'),
 ]
