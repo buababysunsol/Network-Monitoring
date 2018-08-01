@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class NodeIP(models.Model):
+    ip = models.GenericIPAddressField()
+    alive = models.BooleanField()
