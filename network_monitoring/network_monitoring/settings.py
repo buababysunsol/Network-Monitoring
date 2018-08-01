@@ -77,7 +77,9 @@ WSGI_APPLICATION = 'network_monitoring.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3'
+        'ENGINE': 'djongo',
+        'NAME': 'monitoring',
+        # 'ENGINE': 'django.db.backends.sqlite3'
         # 'ENGINE': 'django_mongodb_engine',
         # 'NAME': 'monitordb',
         # 'USER': '',
