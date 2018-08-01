@@ -527,10 +527,11 @@ input[type=text], select {
   margin-right: 25px;
 }
 
+
 .btn {
   display: inline-block;
   letter-spacing: 1.5px;
-  padding: 1rem 1rem;
+  padding: 0.75rem 1rem;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -540,7 +541,7 @@ input[type=text], select {
 
 .btn-swipe{
     position: relative;
-    background-color: #000;
+    background-color: #2b3a42;
     z-index: 0;
     overflow: hidden;
     transition: color 0.3s cubic-bezier(0, .25, .5, 1);
@@ -582,3 +583,115 @@ input[type=text], select {
   color: #000;
 }
 
+.btn-swipe{
+    position: relative;
+    background-color: #0096EC;
+    z-index: 0;
+    overflow: hidden;
+    transition: color 0.3s cubic-bezier(0, .25, .5, 1);
+}
+.btn-swipe.no-bg {
+  background: none;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+.btn-swipe:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  transform: translateX(-115%);
+  transition: all 0.3s cubic-bezier(0, .25, .5, 1);
+  background-color: #fff;
+}
+
+
+
+.btn1 {
+  display: inline-block;
+  letter-spacing: 1.5px;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #fff;
+  margin-left: 1rem;
+}
+
+.btn1-swipe{
+    position: relative;
+    background-color: #C1003E;
+    z-index: 0;
+    overflow: hidden;
+    transition: color 0.3s cubic-bezier(0, .25, .5, 1);
+}
+.btn1-swipe.no-bg {
+  background: none;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+.btn1-swipe:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  transform: translateX(-115%);
+  transition: all 0.3s cubic-bezier(0, .25, .5, 1);
+  background-color: #fff;
+}
+
+.btn1-swipe.angle::before {
+  transform: skewX(-35deg) translateX(-115%);
+}
+
+.btn1-swipe:hover::before,
+.btn1-swipe:active::before {
+  transform: translateX(0) scaleX(1.35);
+}
+
+.btn1-swipe.angle:hover::before,
+.btn1-swipe.angle:active::before {
+  transform: skewX(-15deg) translateX(0) scaleX(1.35);
+}
+
+.btn1-swipe:hover,
+.btn1-swipe:active {
+  color: #000;
+}
+
+.btn1-swipe{
+    position: relative;
+    background-color: #0096EC;
+    z-index: 0;
+    float: right;
+    overflow: hidden;
+    transition: color 0.3s cubic-bezier(0, .25, .5, 1);
+}
+.btn1-swipe.no-bg {
+  background: none;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+.btn1-swipe:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  transform: translateX(-115%);
+  transition: all 0.3s cubic-bezier(0, .25, .5, 1);
+  background-color: #fff;
+}
+
+.btn-set{
+    float: right;
+    background: #918f9e;
+}
