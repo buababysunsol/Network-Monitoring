@@ -4,8 +4,9 @@ import queue
 import netaddr
 from threading import Thread
 
-
+from django.http import HttpResponse
 from django.shortcuts import render
+from .models import NodeIP
 
 
 def ping(ip):
@@ -48,55 +49,53 @@ def pingv4(ip: ipaddress.IPv4Address):
 
 
 def scan_network(network: iter):
-        result = {}
-        input_queue = queue.Queue()
+    result = {}
+    input_queue = queue.Queue()
 
-        class PingWorker(Thread):
-            def __init__(self, input_queue, result):
-                super().__init__()
-                self.input_queue = input_queue
-                self.result = result
+    class PingWorker(Thread):
+        def __init__(self, input_queue, result):
+            super().__init__()
+            self.input_queue = input_queue
+            self.result = result
 
-            def run(self):
+        def run(self):
+            while True:
+                ip = self.input_queue.get()
+                isalive = pingv4(ip)
+                result[str(ip)] = isalive
+                self.input_queue.task_done()
 
-                while True:
-                    ip = self.input_queue.get()
-                    isalive = pingv4(ip)
-                    result[str(ip)] = isalive
-                    self.input_queue.task_done()
+    max_worker = 70
+    num_worker = min(len(network), max_worker);
+    print("Using worker : {}".format(num_worker))
 
-        max_worker = 70
-        num_worker = min(len(network), max_worker);
-        print("Using worker : {}".format(num_worker))
+    for _ in range(num_worker):
+        p = PingWorker(input_queue, result)
+        p.setDaemon(True)
+        p.start()
 
-        for _ in range(num_worker):
-            p = PingWorker(input_queue, result)
-            p.setDaemon(True)
-            p.start()
+    for ip in network:
+        result[str(ip)] = False
+        input_queue.put(ip)
+    input_queue.join()
+    return result
 
-        for ip in network:
-            result[str(ip)] = False
-            input_queue.put(ip)
-        input_queue.join()
-        return result
 
 def discover_network(request):
-
-    #discover ip submask
+    # discover ip submask
     network = request.GET.get('network')
-
 
     if network:
         print("Discover network: {}".format(network))
         result = scan_network(netaddr.IPNetwork(network))
-
+        # add_node_ip(result)
     else:
         result = {}
 
     return render(request, "discover/test_discover.html", {"result": result})
 
-def scanning_ip(request):
 
+def scanning_ip(request):
     start_ip = request.GET.get("start_ip")
     end_ip = request.GET.get("end_ip")
 
@@ -115,10 +114,39 @@ def scanning_ip(request):
     })
 
 
+def add_database(request):
+    ip = request.GET.get('ip_manual')
+    # add_node_ip_to_db(ip)
 
-# def add_database(request):
-#
-#     submit = request.GET.get('add')
-#
-#
-#     return render(request, "discover/test_discover.html")
+    return render(request, "discover/add_manual.html")
+
+
+def add_ip(request):
+    add_type = request.POST.get('add_type')
+    if add_type == 'single':
+        ip = request.POST.get('ip')
+        alive = request.POST.get('alive')
+        # Add to DB
+        add_node_ip_to_db({
+            ip: alive
+        })
+    elif add_type == 'all':
+        ips = request.POST.getlist('ips')
+        alive = request.POST.getlist('alive')
+        result = dict(zip(ips, alive))
+        # print(dict(result))
+        add_node_ip_to_db(result)
+
+    return HttpResponse("Ok")
+
+
+def add_node_ip_to_db(ips: dict):
+    # NodeIP.objects.bulk_create(
+    #     [NodeIP(ip=ip, alive=alive) for ip, alive in ips.items()]
+    # )
+    for ip, alive in ips.items():
+        NodeIP.objects.update_or_create(ip=ip, defaults={'alive': alive})
+
+def views_ip(request):
+
+    return render(request, "discover/view-manage-ip.html")

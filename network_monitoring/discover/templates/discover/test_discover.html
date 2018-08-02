@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{% static 'discover/discover_css.css'%}">
+    <link rel="stylesheet" href="{% static 'discover/discover_css.css' %}">
     <meta charset="UTF-8">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css'>
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
@@ -83,13 +83,16 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
+                                    <a href="{% url 'view_all_ip' %}">Manage IP node</a>
+                                </li>
+                                <li>
                                     <a href="{% url 'discover-ip' %}">Auto Discover</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'scan-ip' %}">Scan IP range</a>
                                 </li>
                                 <li>
-                                    <a href="#">Add Devices</a>
+                                    <a href="{% url 'add-ip' %}">Add Devices</a>
                                 </li>
                             </ul>
                         </div>
@@ -148,7 +151,8 @@
                     <p>Please enter network address and subnetmask</p>
 
                     <form method="get">
-                        Network Address Cidr : <input type="text" name="network" placeholder='ex. 192.168.0.0/24' value="{{ network|default_if_none:"" }}"><br><br>
+                        Network Address Cidr : <input type="text" name="network" placeholder='ex. 192.168.0.0/24'
+                                                      value="{{ network|default_if_none:"" }}"><br><br>
                         <input type="submit" value="scan" class="btn btn-secondary btn-set">
                     </form>
 
@@ -160,34 +164,60 @@
                         <table class="table table-striped">
                             <thead>
 
-                                <tr>
+                            <tr>
 
-                                        <th><center>IP</center></th>
-                                        <th><center>alive</center></th>
-                                        <th><center>Add</center></th>
+                                <th>
+                                    <center>IP</center>
+                                </th>
+                                <th>
+                                    <center>alive</center>
+                                </th>
+                                <th>
+                                    <center>Add</center>
+                                </th>
 
-                                </tr>
+                            </tr>
 
                             </thead>
                             <tbody>
                             {% for ip, alive in result.items %}
-
-                                    {% if alive == True %}
-
+                                {% if alive == True %}
                                     <tr>
-                                            <td><center>{{ ip }}</center></td>
-                                            <td><center>{{ alive }}</center></td>
-                                            <td><center><input type="button" value="add" class="btn btn-swipe"></center></td>
+                                        <td>
+                                            <center>{{ ip }}</center>
+                                        </td>
+                                        <td>
+                                            <center>{{ alive }}</center>
+                                        </td>
+                                        <td>
+                                            <form method="post" action="{% url 'add' %}">
+                                                {% csrf_token %}
+                                                <center><input type="submit" value="add" class="btn btn-swipe"></center>
+                                                <input type="hidden" name="add_type" value="single">
+                                                <input type="hidden" name="ip" value="{{ ip }}">
+                                                <input type="hidden" name="alive" value="{{ alive }}">
+                                            </form>
+                                        </td>
 
-                                     </tr>
+                                    </tr>
 
-                                    {% endif %}
+                                {% endif %}
                             {% endfor %}
 
                             </tbody>
                         </table>
 
-                        <input type="button" value="add all" class="btn1 btn1-swipe">
+                        <form method="post" action="{% url 'add' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="add_type" value="all">
+                            {% for ip, alive in result.items %}
+                            {% if alive is True %}
+                                <input type="hidden" name="ips" value="{{ ip }}">
+                                <input type="hidden" name="alive" value="{{ alive }}">
+                                {% endif %}
+                            {% endfor %}
+                            <input type="submit" value="add all" class="btn1 btn1-swipe">
+                        </form>
                     </div>
 
                 {% endif %}
@@ -197,14 +227,14 @@
         </div>
 
     </main>
-    </div>
+</div>
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js'></script>
 
 
-    <script src="{% static 'discover/disJS.js' %}"></script>
+<script src="{% static 'discover/disJS.js' %}"></script>
 
 </body>
 </html>
