@@ -154,7 +154,9 @@
                     <form method="get">
                         IP address : <input type="text" name="ip_manual" placeholder='ex. 192.168.0.0'
                                             value="{{ network|default_if_none:"" }}"><br><br>
-                        <input type="submit" value="scan" class="btn btn-secondary btn-set">
+                        Community : <input type="text" name="ip_manual" placeholder='Community name'
+                                            value="{{ network|default_if_none:"" }}"><br><br>
+                        <input type="submit" value="add" class="btn btn-secondary btn-set">
                     </form>
                 </div>
             </div>
