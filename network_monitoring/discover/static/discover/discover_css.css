@@ -450,7 +450,14 @@ input[type=text], select {
 }
 
 .cool-theme .sidebar-wrapper .sidebar-search input.search-menu,
-.cool-theme .sidebar-wrapper .sidebar-search .input-group-text {
+.cool-theme .sidebar-wrapper .sidebar-search  {
+  margin-top: auto;
+  border-color: #504e57;
+  box-shadow: none;
+}
+
+.input-group-text{
+  height: 100%;
   border-color: #504e57;
   box-shadow: none;
 }
