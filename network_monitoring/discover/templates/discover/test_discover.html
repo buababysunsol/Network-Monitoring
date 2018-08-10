@@ -153,6 +153,8 @@
                     <form method="get">
                         Network Address Cidr : <input type="text" name="network" placeholder='ex. 192.168.0.0/24'
                                                       value="{{ network|default_if_none:"" }}"><br><br>
+                        SNMP Community : <input type="text" name="community" placeholder='community name'
+                                                      value="{{ community|default_if_none:"" }}"><br><br>
                         <input type="submit" value="scan" class="btn btn-secondary btn-set">
                     </form>
 
@@ -195,6 +197,7 @@
                                                 <center><input type="submit" value="add" class="btn btn-swipe"></center>
                                                 <input type="hidden" name="add_type" value="single">
                                                 <input type="hidden" name="ip" value="{{ ip }}">
+                                                <input type="hidden" name="community" value="{{ community }}">
                                                 <input type="hidden" name="alive" value="{{ alive }}">
                                             </form>
                                         </td>
@@ -213,6 +216,7 @@
                             {% for ip, alive in result.items %}
                             {% if alive is True %}
                                 <input type="hidden" name="ips" value="{{ ip }}">
+                                <input type="hidden" name="community" value="{{ community }}">
                                 <input type="hidden" name="alive" value="{{ alive }}">
                                 {% endif %}
                             {% endfor %}
