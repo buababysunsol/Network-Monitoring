@@ -55,11 +55,11 @@ def view_node_easy(request, oid):
         # '1.3.6.1.4.1.207.8.9.2.5.2.1', #vlan
         # '1.3.6.1.2.1.2.2.1'  # Interfaces
         # '1.3.6.1.2.1.4.20'  # Ip Addr
-        # '1.3.6.1.2.1.1'  # System info
+        '1.3.6.1.2.1.1'  # System info
         # '1.3.6.1.2.1.2.2.1.1',  # index
         # '1.3.6.1.2.1.2.2.1.2',  # description
         #  '1.3.6.1.2.1.2.2.1.5',  # speed
-        '1.3.6.1.2.1.1',  # des
+        # '1.3.6.1.2.1.1',  # des
         # '1.3.6.1.4.1.9.7.584', #LLDP
         # '1.3.6.1.2.1.2.2.1.10',  # in_octets
         # '1.3.6.1.2.1.2.2.1.16',  # out_octets
@@ -182,3 +182,7 @@ def test_thread(request):
         n.append(data)
 
     return HttpResponse("Success, <pre>" + pprint.pformat(n))
+
+# def get_snmp(ip):
+
+
