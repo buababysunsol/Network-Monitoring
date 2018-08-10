@@ -154,7 +154,8 @@
 
                     <form action="" method="get">
                         IP range : <input type="text" name="start_ip" placeholder='ex. 192.168.x.x'>
-                        to : <input type="text" name="end_ip" placeholder='ex. 192.168.x.x'>
+                        to : <input type="text" name="end_ip" placeholder='ex. 192.168.x.x'><br><br>
+                        Community : <input type="text" name="community" placeholder='community name' value="{{ network|default_if_none:"" }}">
                         <input type="submit" value="scan" class="btn btn-secondary btn-set">
                     </form>
 
@@ -200,6 +201,7 @@
                                     </td>
                                     <input type="hidden" name="add_type" value="single">
                                     <input type="hidden" name="ip" value="{{ ip }}">
+                                    <input type="hidden" name="community" value="{{ community }}"
                                     <input type="hidden" name="alive" value="{{ alive }}">
                                     </form>
                                 </tr>
