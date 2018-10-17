@@ -1,0 +1,365 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+
+
+    <meta charset="UTF-8">
+    <title>{% block title %}AIT-monitoring {% endblock %}</title>
+
+    <!--- meta --->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ADD DEVICES</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--- link --->
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/cs-skin-elastic.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/scss/style.css' %}">
+    <link href="{% static 'assets/css/lib/vector-map/jqvmap.min.css" rel="stylesheet' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <style>
+
+        @import url(https://fonts.googleapis.com/css?family=Gudea);
+
+        .main {
+            padding: 2em;
+            margin: 0 auto;
+            width: 100%;
+            margin-left: 2em;
+        }
+
+        .radioholder {
+            width: 48%;
+            background: #fff;
+            margin-bottom: 1em;
+            font-size: 1.3em;
+            height: 2.4em;
+            color: #666;
+            -o-transition: .1s ease-out;
+            -ms-transition: .1s ease-out;
+            -moz-transition: .1s ease-out;
+            -webkit-transition: .1s ease-out;
+            transition: .1s ease-out;
+            cursor: pointer;
+        }
+
+        .activeradioholder {
+            background: #39A9A4;
+            color: #fff;
+        }
+
+        .radioholder .desc {
+            display: inline-block;
+            vertical-align: middle;
+            padding-left: .6em;
+            line-height: 2.4em;
+        }
+
+        .radioholder .tick {
+            display: inline-block;
+            vertical-align: middle;
+            width: 2.4em;
+            height: 100%;
+            background-color: #eee;
+            background-image: none;
+            -o-transition: .1s ease-out;
+            -ms-transition: .1s ease-out;
+            -moz-transition: .1s ease-out;
+            -webkit-transition: .1s ease-out;
+            transition: .1s ease-out;
+        }
+
+        .activeradioholder .tick {
+            background-color: #2A817C;
+            background-image: url('http://supereightstudio.com/img/radio_tick.png');
+            background-size: cover;
+        }
+
+        .radioholder:nth-child(odd) {
+            float: right;
+        }
+
+        .radioholder:nth-child(even) {
+            float: left;
+        }
+
+        .radioholder:hover {
+            background-color: #eee;
+        }
+
+        .radioholder:hover .tick {
+            background-color: #ddd;
+        }
+
+        .activeradioholder:hover {
+            background-color: #39A9A4;
+        }
+
+        .activeradioholder:hover .tick {
+            background-color: #2A817C;
+        }
+
+        .selectholder {
+            clear: both;
+            width: 100%;
+            background: #eee;
+            margin-bottom: 1em;
+            font-size: 1.3em;
+            height: 2.4em;
+            color: #666;
+            -o-transition: .1s ease-out;
+            -ms-transition: .1s ease-out;
+            -moz-transition: .1s ease-out;
+            -webkit-transition: .1s ease-out;
+            transition: .1s ease-out;
+            cursor: pointer;
+        }
+
+        .selectholder .desc {
+            display: inline-block;
+            vertical-align: middle;
+            padding-left: .8em;
+            line-height: 2.4em;
+        }
+
+        .selectholder .pulldown {
+            float: right;
+            vertical-align: middle;
+            width: 2.4em;
+            height: 100%;
+            background-color: #ddd;
+            background-image: url('http://supereightstudio.com/img/pulldown.png');
+            background-size: cover;
+            -o-transition: .1s ease-out;
+            -ms-transition: .1s ease-out;
+            -moz-transition: .1s ease-out;
+            -webkit-transition: .1s ease-out;
+            transition: .1s ease-out;
+        }
+
+        .selectholder:hover,
+        .activeselectholder {
+            background-color: #ddd;
+        }
+
+        .form-group {
+            padding: 10em 20em 10em 10em;
+        }
+
+    </style>
+</head>
+<body>
+
+{% block sidebar %}
+    <aside id="left-panel" class="left-panel">
+        <nav class="navbar navbar-expand-sm navbar-default">
+
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu"
+                        aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="#"><img src="{% static 'image/ait_logo.png' %}"></a>
+                <a class="navbar-brand hidden" href="#"><img src="{% static 'image/ait_logo.png' %}"></a>
+            </div>
+
+            <div id="main-menu" class="main-menu collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                    </li>
+
+                    <h3 class="menu-title">MAIN</h3><!-- /.main user -->
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Devices Search</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-plus-square-o"></i><a href="ui-buttons.html">All Devices Node</a></li>
+                        </ul>
+                    </li><!-- node -->
+                    <li>
+                        <a href="#"> <i class="menu-icon fa fa-map"></i>Toplogy</a>
+                    </li><!-- Topo -->
+                    <li>
+                        <a href="#"> <i class="menu-icon fa fa-file-text"></i>Report</a>
+                    </li><!-- Roport -->
+
+
+                    <h3 class="menu-title">ADMINISTRATOR</h3><!-- /.admin user -->
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Devices Management</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-plus-square-o"></i><a href="#">All Devices IP</a></li>
+                            <li><i class="fa fa-plus-square-o"></i><a href="#">Add Devices</a></li>
+                        </ul>
+                    </li><!-- Devices manage -->
+                    <li>
+                        <a href="#"> <i class="menu-icon fa fa-user-o"></i>User setting</a>
+                    </li><!-- user setting -->
+                    <li>
+                        <a href="#"> <i class="menu-icon fa fa-file-text"></i>Alert Setting</a>
+                    </li><!-- Roport -->
+
+                </ul>
+            </div>
+        </nav>
+    </aside>
+{% endblock %}
+
+{% block header %}
+    <div id="right-panel" class="right-panel">
+        <header id="header" class="header">
+            <div class="header-menu">
+                <div class="col-sm-7">
+                    <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
+                    AIT - monitoring
+                </div>
+                <div class="col-sm-5">
+                    <div class="user-area dropdown float-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            <img class="user-avatar rounded-circle" src="{% static 'image/icons8-user-64.png' %}">
+                        </a>
+
+                        <div class="user-menu dropdown-menu">
+                            <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
+
+                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span
+                                    class="count">13</span></a>
+
+                            <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
+
+                            <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
+                        </div>
+                    </div><!--- user --->
+
+                </div>
+            </div>
+        </header>
+
+        <section style="padding: 20px;">
+            <div class="card">
+                <div class="container" style="padding: 20px">
+                    {% block content %} {% endblock %}
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+{% endblock %}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+<script src="{% static 'assets/js/plugins.js' %}"></script>
+{#<script src="{% static 'assets/js/main.js' %}"></script>#}
+
+
+<script src="{% static 'assets/js/lib/chart-js/Chart.bundle.js' %}"></script>
+<script src="{% static 'assets/js/dashboard.js' %}"></script>
+<script src="{% static 'assets/js/widgets.js' %}"></script>
+<script src="{% static 'assets/js/lib/vector-map/jquery.vmap.js' %}"></script>
+<script src="{% static 'assets/js/lib/vector-map/jquery.vmap.min.js' %}"></script>
+<script src="{% static 'assets/js/lib/vector-map/jquery.vmap.sampledata.js' %}"></script>
+<script src="{% static 'assets/js/lib/vector-map/country/jquery.vmap.world.js' %}"></script>
+{#<script>#}
+{#    (function ($) {#}
+{#        "use strict";#}
+{##}
+{#        jQuery('#vmap').vectorMap({#}
+{#            map: 'world_en',#}
+{#            backgroundColor: null,#}
+{#            color: '#ffffff',#}
+{#            hoverOpacity: 0.7,#}
+{#            selectedColor: '#1de9b6',#}
+{#            enableZoom: true,#}
+{#            showTooltip: true,#}
+{#            values: sample_data,#}
+{#            scaleColors: ['#1de9b6', '#03a9f5'],#}
+{#            normalizeFunction: 'polynomial'#}
+{#        });#}
+{#    })(jQuery);#}
+{#</script>#}
+
+<script>
+
+    // preload image function
+    function preload(arrayOfImages) {
+        $(arrayOfImages).each(function () {
+            $('<img/>')[0].src = this;
+        });
+    }
+
+    $( document ).ready(function () {
+
+        // set up radio boxes
+        $('.radioholder').each(function () {
+            $(this).children().hide();
+            var description = $(this).children('label').html();
+            $(this).append('<span class="desc">' + description + '</span>');
+            $(this).prepend('<span class="tick"></span>');
+            // on click, update radio boxes accordingly
+
+            $(this).click(function () {
+                $(this).children('input').prop('checked', true);
+                $(this).children('input').trigger('change');
+
+                if ($(this).children('input').val() === 'net_range') {
+                    $('#ip-testing').show();
+                    $('#ip-testing-1').hide();
+                    $('#ip-testing-2').hide();
+                }
+                else if ($(this).children('input').val() === 'ip_range') {
+                    $('#ip-testing-1').show();
+                    $('#ip-testing').hide();
+                    $('#ip-testing-2').hide();
+                }
+                else if ($(this).children('input').val() === 'add') {
+                    $('#ip-testing-2').show();
+                    $('#ip-testing-1').hide();
+                    $('#ip-testing').hide();
+                }
+
+            });
+        });
+        // update radio holder classes when a radio element changes
+        $('input[type=radio]').change(function () {
+            $('input[type=radio]').each(function () {
+                if ($(this).prop('checked') == true) {
+                    $(this).parent().addClass('activeradioholder');
+                }
+                else $(this).parent().removeClass('activeradioholder');
+            });
+        });
+        // manually fire radio box change event on page load
+        $('input[type=radio]').change();
+
+        // set up select boxes
+        $('.selectholder').each(function () {
+            $(this).children().hide();
+            var description = $(this).children('label').text();
+            $(this).append('<span class="desc">' + description + '</span>');
+            $(this).append('<span class="pulldown"></span>');
+
+
+        });
+    });
+
+</script>
+</body>
+</html>

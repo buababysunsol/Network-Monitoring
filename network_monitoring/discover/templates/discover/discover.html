@@ -1,0 +1,198 @@
+{% extends 'network_monitoring/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="main">
+        <h2>ADD DEVICES</h2>
+        <p>Please choose method</p>
+        <!-- Group of default radios - manual -->
+        <div class="radioholder">
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios"
+                       value="manualAdd" checked>
+                <label class="custom-control-label" for="defaultGroupExample1">Add devices manual</label>
+            </div>
+        </div>
+        <!-- Group of default radios - discover -->
+        <div class="radioholder">
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios"
+                       value="discoverAdd">
+                <label class="custom-control-label" for="defaultGroupExample2">Discover</label>
+            </div>
+        </div>
+
+        <br><br>
+        <p>Please take address</p>
+        <!-- Group of default input - discover -->
+        <form method="get">
+            <div class="input-add" style="display: none">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">IP Addresss</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default"
+                           name="network" value="{{ network|default_if_none:"" }}"
+                           placeholder="Ex : 192.168.0/24, 192.168.1.1 - 192.168.1.10">
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary float-right">SCAN</button>
+            </div>
+
+            <!-- Group of default input - manual -->
+            <div class="input-mual" style="display: block">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">IP</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default"
+                           name="ip" value="{{ ip|default_if_none:"" }}"
+                           placeholder="Ex : 192.168.1.20">
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary float-right">ADD</button>
+            </div>
+        </form>
+        <br><br>
+
+        {% if result %}
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col align-middle">Community</th>
+                    <th scope="col align-middle">IP Address</th>
+                    <th scope="col align-middle">SNMP version</th>
+                    <th scope="col align-middle">Connection</th>
+                    <th scope="col align-middle">
+                        <button type="button" id="add-all" class="btn btn-success fa fa-plus"></button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ip, alive in result.items %}
+                    {% if alive == True %}
+                        <tr>
+                            <td class="align-middle">{{ community }}</td>
+                            <td class="align-middle">{{ ip }}</td>
+                            <td class="align-middle">{{ snmp_version }}</td>
+                            <td class="align-middle">{{ alive }}</td>
+                            <td class="align-middle">
+                                <form class="add-single" method="post" action="{% url 'add' %}">
+                                    {% csrf_token %}
+                                    <input type="submit" value="add" class="btn btn-success fa fa-plus">
+                                    <input type="hidden" name="add_type" value="single">
+                                    <input type="hidden" name="ip" value="{{ ip }}">
+                                    <input type="hidden" name="alive" value="True">
+                                    <input type="hidden" name="community" value="{{ community }}">
+                                    <input type="hidden" name="snmp_version" value="{{ snmp_version }}">
+                                </form>
+                            </td>
+
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <form method="post" action="{% url 'add' %}" id="add-all-form">
+                {% csrf_token %}
+            </form>
+        {% endif %}
+
+        {% if success %}
+            <h1>ADD already</h1>
+        {% endif %}
+    </div>
+
+
+
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+
+        $('.radioholder').each(function () {
+            $(this).children().hide();
+            var description = $(this).children('label').html();
+            $(this).append('<span class="desc">' + description + '</span>');
+            $(this).prepend('<span class="tick"></span>');
+
+        })
+        $('#add-all').click(function () {
+            let ipsElem = $("form.add-single input[name='ip']")
+            ipsElem.each(function () {
+                let ipElem = $(this)
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'ip',
+                    value: ipElem.val()
+                }).appendTo('#add-all-form')
+            });
+            let aliveElem = $("form.add-single input[name='alive']")
+            aliveElem.each(function () {
+                let alive = $(this)
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'alive',
+                    value: alive.val()
+                }).appendTo('#add-all-form')
+            });
+            let communityElem = $("form.add-single input[name='community']")
+            communityElem.each(function () {
+                let community = $(this)
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'community',
+                    value: community.val()
+                }).appendTo('#add-all-form')
+            });
+
+            let snmpVersionElem = $("form.add-single input[name='snmp_version']")
+            snmpVersionElem.each(function () {
+                let snmpVersion = $(this)
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'snmp_version',
+                    value: snmpVersion.val()
+                }).appendTo('#add-all-form')
+            })
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'add_type',
+                value: 'all'
+            }).appendTo('#add-all-form')
+            $('#add-all-form').submit();
+        });
+
+        $('#snmp-ver > option').click(function () {
+            const ver = $(this).val();
+            console.log(ver)
+            if (ver === "v1") {
+                $('#int-v1').show()
+                $('#int-v2').hide()
+                $('#int-v3').hide();
+                $("#snmp_version").val("1")
+            } else if (ver === "v2") {
+                $('#int-v1').hide()
+                $('#int-v2').show()
+                $('#int-v3').hide()
+                $("#snmp_version").val("2")
+            } else if (ver === "v3") {
+                $('#int-v1').hide();
+                $('#int-v2').hide();
+                $('#int-v3').show();
+                $("#snmp_version").val("3")
+            }
+
+        })
+        $().ready(function () {
+            {#$('#snmp-ver').val('v1').change()#}
+            $('#int-v1').hide()
+            $('#int-v2').hide()
+            $('#int-v3').hide()
+        })
+    </script>
+{% endblock %}

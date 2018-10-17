@@ -1,0 +1,111 @@
+{% extends 'network_monitoring/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <main class="page-content">
+        <h2>Manage IP Node</h2>
+        <p></p>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="refresh" value="true">
+            <button type="submit" class="btn btn-info">Refresh</button>
+        </form>
+        <p></p>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th class="col align-middle">Sitename</th>
+                <th class="col align-middle">Community</th>
+                <th class="col align-middle">Hostname</th>
+                <th class="col align-middle">Address</th>
+                <th class="col align-middle">SNMP version</th>
+                <th class="col align-middle">Status</th>
+                <th class="col align-middle">Uptime</th>
+                <th class="col align-middle">#</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <td class="sitename">{{ node_ip.site_name|default:"-" }}</td>
+            <td class="snmp_community">{{ node_ip.community }}</td>
+            <td>{{ node_ip.hostname|default:"-" }}</td>
+            <td class="ip">{{ node_ip.ip }}</td>
+            <td class="snmp_version">{{ node_ip.snmp_version }}</td>
+            <td>{{ node_ip.alive }}</td>
+            <td>{{ node_ip.uptime }}</td>
+            <td>
+                <form method="post" action="{% url 'node-destroy' node_ip=node_ip.ip %}">
+                    {% csrf_token %}
+                    <button type="button" value="edit"
+                            class="btn btn-primary btn-warning btn-swipe show-edit fa fa-pencil"
+                            data-id="{{ forloop.counter0 }}" data-toggle="modal"
+                            data-trget="#exampleModal"></button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Devices information</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group">
+                                        <label class="col-md-3">Community</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input class="form-control" id="updatecommunity" type="text">
+                                    </div>
+                                    <div class="input-group" style="padding-top: 10px">
+                                        <label class="col-md-3">Site name</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" id="updateSitename" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" value="remove"
+                            class="btn btn-swipe fa fa-trash-o btn-danger"></button>
+                    <input type="hidden" name="ip" value="{{ node_ip.ip }}">
+                </form>
+            </td>
+            </tr>
+
+            {% for if in node_ip.interfaces %}
+                <tr>
+                    <td colspan="7">
+                        {% for if_name, if_data in if.items %}
+                            {{ if_name }}: {{ if_data }},
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+
+    </main>
+
+{% endblock %}

@@ -1,9 +1,23 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from pysnmp.hlapi import *
-from easysnmp import snmp_bulkwalk
+from easysnmp import snmp_bulkwalk, snmp_get
 from concurrent.futures import ThreadPoolExecutor, wait, as_completed
 import pprint
+from discover.models import NodeIP
+
+
+def view_all_node(request):
+    result = NodeIP.objects.all()
+    return render(request, 'node/All node.html', {'result': result})
+
+
+# def node_detail():
+#
+def node_profile(request):
+    profile = request.POST.get('profile')
+    if profile == 'detail':
+        return redirect('node-profile')
 
 
 # View node by pysnmp
@@ -55,7 +69,8 @@ def view_node_easy(request, oid):
         # '1.3.6.1.4.1.207.8.9.2.5.2.1', #vlan
         # '1.3.6.1.2.1.2.2.1'  # Interfaces
         # '1.3.6.1.2.1.4.20'  # Ip Addr
-        '1.3.6.1.2.1.1'  # System info
+        # '1.3.6.1.2.1.1'  # System info
+        '1.3.6.1.2.1.1.5'  # SysNAMe
         # '1.3.6.1.2.1.2.2.1.1',  # index
         # '1.3.6.1.2.1.2.2.1.2',  # description
         #  '1.3.6.1.2.1.2.2.1.5',  # speed
@@ -70,7 +85,7 @@ def view_node_easy(request, oid):
     community = 'public'
     version = 2
 
-    interface_fetch = snmp_bulkwalk(
+    interface_fetch = snmp_get(
         interface_oids,
         0,
         100,
@@ -184,5 +199,3 @@ def test_thread(request):
     return HttpResponse("Success, <pre>" + pprint.pformat(n))
 
 # def get_snmp(ip):
-
-

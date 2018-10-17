@@ -1,0 +1,204 @@
+{% extends 'network_monitoring/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="main">
+        <h2>ADD DEVICES</h2>
+        <p>Please choose method</p>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="add_type" id="manual" value="option1" checked>
+            <label class="form-check-label" for="manual">
+              Default radio
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="add_type" id="discover" value="option2">
+            <label class="form-check-label" for="discover">
+              Second default radio
+            </label>
+          </div>
+
+
+        {#        input type add manual#}
+        <div id="input-add" style="display: block;">
+            <form method="get">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">IP</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default"
+                           name="network_manual" value="{{ network_manual|default_if_none:"" }}"
+                           placeholder="Ex : 192.168.1.10">
+                </div>
+                {#                    SNMP dropdown#}
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        SNMP version
+                    </button>
+                    <div id="snmp-ver" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <option class="dropdown-item" value="v1" name="version">SNMPv1</option>
+                        <option class="dropdown-item" value="v2" name="version">SNMPv2</option>
+                        <option class="dropdown-item" value="v3" name="version">SNMPv3</option>
+                    </div>
+                </div>
+                <br>
+                <input type="hidden" id="snmp_version" name="snmp_version" value="">
+                <div class="form-group row">
+                    <div class="col-xs-2">
+                        <input class="form-control" id="int-v1" type="text" value="Version 1">
+                    </div>
+                </div>
+                <div id="int-v2">
+                    <div class="form-group row">
+                        <div class="col-xs-2">
+                            <input class="form-control" type="text" value="Version 2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="urc">Community :</label>
+                        <input type="text" class="form-control" id="urc">
+                    </div>
+                </div>
+                <div id="int-v3">
+                    <div class="form-group row">
+                        <div class="col-xs-2">
+                            <input class="form-control" type="text" value="Version 3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="urc">Username :</label>
+                        <input type="text" class="form-control" id="urc">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="urc">Password :</label>
+                        <input type="text" class="form-control" id="urc">
+                    </div>
+                </div>
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary float-right" value="add">ADD</button>
+        </form>
+    </div>
+
+    {#            input type add discover#}
+    <div id="input-dis" style="display: none;">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">IP Addresss</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default"
+                   name="network" value="{{ network|default_if_none:"" }}"
+                   placeholder="Ex : 192.168.0/24, 192.168.1.1 - 192.168.1.10">
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary float-right" value="scan">SCAN</button>
+
+    </div>
+
+
+
+
+
+    {% if result %}
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col"><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+                <th scope="col">IP</th>
+                <th scope="col">Connection</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ip, alive in result.items %}
+                {% if alive == True %}
+                    <tr>
+                        <td><input class="form-check-input" type="checkbox" id="gridCheck1"></td>
+                        <td>{{ IP }}</td>
+                        <td>connect</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+
+    <script>
+        {#$('.radioholder').each(function () {#}
+        {#    $(this).children.hide();#}
+        {#    var description = $(this).children('label').html();#}
+        {#    $(this).append('<span class="desc">' + description + '</span>');#}
+        {#    $(this).prepend('<span class="tick"></span>');#}
+        {##}
+        {#    $(this).click(function () {#}
+        {#        $(this).children('input').prop('checked', true);#}
+        {#        $(this).children('input').trigger('change');#}
+        {##}
+        {#        if ($(this).children('input').val() === "manualAdd") {#}
+        {#            $('#input-add').show();#}
+        {#            $('#input-dis').hide();#}
+        {#        }#}
+        {##}
+        {#        else if ($(this).children('input').val() === "discoverAdd") {#}
+        {#            $('#input-add').hide();#}
+        {#            $('#input-dis').show();#}
+        {#        }#}
+        {#    });#}
+        {#});#}
+
+        $('input[type=radio]').change(function () {
+            $('input[type=radio]').each(function () {
+                if ($(this).prop('checked') === true) {
+                    $(this).parent().addClass('activeradioholder');
+                }
+                else $(this).parent().removeClass('activeradioholder');
+            });
+        });
+
+        $('#manual').click(function () {
+            $(this).show();
+            $('#discover').hide();
+        });
+
+        $('#discover').click(function () {
+            $(this).show();
+            $('#manual').hide();
+        })
+
+
+        $('#snmp-ver > option').click(function () {
+            const ver = $(this).val();
+            console.log(ver);
+            if (ver === "v1") {
+                $('#int-v1').show();
+                $('#int-v2').hide();
+                $('#int-v3').hide();
+                $("#snmp_version").val("1");
+            } else if (ver === "v2") {
+                $('#int-v1').hide();
+                $('#int-v2').show();
+                $('#int-v3').hide();
+                $("#snmp_version").val("2");
+            } else if (ver === "v3") {
+                $('#int-v1').hide();
+                $('#int-v2').hide();
+                $('#int-v3').show();
+                $("#snmp_version").val("3");
+            }
+        });
+        $().ready(function () {
+            $('#int-v1').hide();
+            $('#int-v2').hide();
+            $('#int-v3').hide();
+        });
+    </script>
+
+{% endblock %}

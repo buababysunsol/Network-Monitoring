@@ -1,10 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>ADD DEVICES</title>
+
 </head>
+
+<script>
+    function preload(arrayOfImages) {
+        $(arrayOfImages).each(function () {
+            $('<img/>')[0].src = this;
+        });
+    }
+
+    $(document).ready(function () {
+
+        // set up radio boxes
+        $('.radioholder').each(function () {
+            $(this).children().hide();
+            var description = $(this).children('label').html();
+            $(this).append('<span class="desc">' + description + '</span>');
+            $(this).prepend('<span class="tick"></span>');
+            // on click, update radio boxes accordingly
+
+            $(this).click(function () {
+                $(this).children('input').prop('checked', true);
+                $(this).children('input').trigger('change');
+
+                if ($(this).children('input').val() === 'Mobile') {
+                    $('#ip-testing').show();
+                    $('#ip-testing-1').hide();
+                    $('#ip-testing-2').hide();
+                }
+                else if ($(this).children('input').val() === 'Website') {
+                    $('#ip-testing-1').show();
+                    $('#ip-testing').hide();
+                    $('#ip-testing-2').hide();
+                }
+                else if ($(this).children('input').val() === 'Illustration') {
+                    $('#ip-testing-2').show();
+                    $('#ip-testing-1').hide();
+                    $('#ip-testing').hide();
+                }
+
+            });
+        });
+        // update radio holder classes when a radio element changes
+        $('input[type=radio]').change(function () {
+            $('input[type=radio]').each(function () {
+                if ($(this).prop('checked') == true) {
+                    $(this).parent().addClass('activeradioholder');
+                }
+                else $(this).parent().removeClass('activeradioholder');
+            });
+        });
+        // manually fire radio box change event on page load
+        $('input[type=radio]').change();
+
+        // set up select boxes
+        $('.selectholder').each(function () {
+            $(this).children().hide();
+            var description = $(this).children('label').text();
+            $(this).append('<span class="desc">' + description + '</span>');
+            $(this).append('<span class="pulldown"></span>');
+
+
+        });
+    });
+
+
+</script>
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Gudea);
+
+    .main {
+        padding: 2em;
+        margin: 0 auto;
+        width: 100%;
+        margin-left: 2em;
+    }
+
+    .radioholder {
+        width: 48%;
+        background: #fff;
+        margin-bottom: 1em;
+        font-size: 1.3em;
+        height: 2.4em;
+        color: #666;
+        -o-transition: .1s ease-out;
+        -ms-transition: .1s ease-out;
+        -moz-transition: .1s ease-out;
+        -webkit-transition: .1s ease-out;
+        transition: .1s ease-out;
+        cursor: pointer;
+    }
+
+    .activeradioholder {
+        background: #39A9A4;
+        color: #fff;
+    }
+
+    .radioholder .desc {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: .6em;
+        line-height: 2.4em;
+    }
+
+    .radioholder .tick {
+        display: inline-block;
+        vertical-align: middle;
+        width: 2.4em;
+        height: 100%;
+        background-color: #eee;
+        background-image: none;
+        -o-transition: .1s ease-out;
+        -ms-transition: .1s ease-out;
+        -moz-transition: .1s ease-out;
+        -webkit-transition: .1s ease-out;
+        transition: .1s ease-out;
+    }
+
+    .activeradioholder .tick {
+        background-color: #2A817C;
+        background-image: url('http://supereightstudio.com/img/radio_tick.png');
+        background-size: cover;
+    }
+
+    .radioholder:nth-child(odd) {
+        float: right;
+    }
+
+    .radioholder:nth-child(even) {
+        float: left;
+    }
+
+    .radioholder:hover {
+        background-color: #eee;
+    }
+
+    .radioholder:hover .tick {
+        background-color: #ddd;
+    }
+
+    .activeradioholder:hover {
+        background-color: #39A9A4;
+    }
+
+    .activeradioholder:hover .tick {
+        background-color: #2A817C;
+    }
+
+    .selectholder {
+        clear: both;
+        width: 100%;
+        background: #eee;
+        margin-bottom: 1em;
+        font-size: 1.3em;
+        height: 2.4em;
+        color: #666;
+        -o-transition: .1s ease-out;
+        -ms-transition: .1s ease-out;
+        -moz-transition: .1s ease-out;
+        -webkit-transition: .1s ease-out;
+        transition: .1s ease-out;
+        cursor: pointer;
+    }
+
+    .selectholder .desc {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: .8em;
+        line-height: 2.4em;
+    }
+
+    .selectholder .pulldown {
+        float: right;
+        vertical-align: middle;
+        width: 2.4em;
+        height: 100%;
+        background-color: #ddd;
+        background-image: url('http://supereightstudio.com/img/pulldown.png');
+        background-size: cover;
+        -o-transition: .1s ease-out;
+        -ms-transition: .1s ease-out;
+        -moz-transition: .1s ease-out;
+        -webkit-transition: .1s ease-out;
+        transition: .1s ease-out;
+    }
+
+    .selectholder:hover,
+    .activeselectholder {
+        background-color: #ddd;
+    }
+
+    .form-group {
+        padding: 10em 20em 10em 10em;
+    }
+</style>
+
 <body>
-$END$
+
+<div class="main">
+
+    <div class="radioholder">
+        <input type="radio" name="input_type" value="net_range">
+        <label for="pt_mobile">discover</label>
+    </div>
+
+    <div class="radioholder">
+        <input type="radio" name="input_type" value="ip_range">
+        <label for="pt_mobile">IP Range</label>
+    </div>
+
+    <div class="radioholder">
+        <input type="radio" name="input_type" value="add">
+        <label for="pt_mobile">Add IP</label>
+    </div>
+
+    <div class="form-group" id="ip-testing" style="display:block;">
+        <input class="form-control" type="text" placeholder="Ex : 192.168.0.0/24">
+    </div>
+
+    <div class="form-group" id="ip-testing-1" style="display:none;">
+        Start IP : <input class="form-control" type="text" placeholder="Ex : 192.168.0.0">
+        To : <input class="form-control" type="test" placeholder="Ex : 192.168.1.10">
+    </div>
+
+    <div class="form-group" id="ip-testing-2" style="display:none;">
+        <input class="form-control" type="text" placeholder="IP Testing 2">
+    </div>
+
+
+</div>
+
+
 </body>
 </html>

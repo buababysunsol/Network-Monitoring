@@ -1,192 +1,157 @@
+{% extends 'network_monitoring/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'discover/discover_css.css' %}">
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css'>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
-
-    <title>manage ip</title>
-</head>
-<body>
-
-<div class="page-wrapper cool-theme toggled">
-    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-        <i class="fas fa-bars"></i>
-    </a>
-    <nav id="sidebar" class="sidebar-wrapper">
-        <div class="sidebar-content">
-            <div class="sidebar-brand">
-                <a href="#">AIT - monitor</a>
-                <div id="close-sidebar">
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-
-            <div class="sidebar-header">
-                <div class="user-info">
-                        <span class="user-name">
-                            <strong>Bunpitcha</strong>
-                        </span>
-                    <span class="user-role">Administrator</span>
-                    <span class="user-status">
-                            <i class="fa fa-circle"></i>
-                            <span>Online</span>
-                        </span>
-                </div>
-            </div>
-
-            <div class="sidebar-search">
-                <div>
-                    <div class="input-group">
-                        <input type="text" class="form-control search-menu" placeholder="Search...">
-                        <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
 
-            <div class="sidebar-menu">
-                <ul>
-                    <li class="header-menu">
-                        <span>General</span>
-                    </li>
-                    <li class="sidebar-dropdown">
-                        <a href="#">
-                            <i class="fa fa-tachometer-alt"></i>
-                            <span>Dashboard</span>
-                        </a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li>
-                                    <a href="#">Dashboard 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Dashboard 2</a>
-                                </li>
-                                <li>
-                                    <a href="#">Dashboard 3</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="sidebar-dropdown">
-                        <a href="#">
-                            <i class="fa fa-search"></i>
-                            <span>Discover</span>
-                        </a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li>
-                                    <a href="{% url 'view_all_ip' %}">Manage IP node</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'discover-ip' %}">Auto Discover</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'scan-ip' %}">Scan IP range</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'add-ip' %}">Add Devices</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="sidebar-dropdown">
-                        <a href="#">
-                            <i class="far fa-id-card"></i>
-                            <span>Node Profile</span>
-                        </a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li>
-                                    <a href="#">General</a>
-                                </li>
-                                <li>
-                                    <a href="#">Panels</a>
-                                </li>
-                                <li>
-                                    <a href="#">Tables</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="sidebar-dropdown">
-                        <a href="#">
-                            <i class="fa fa-globe"></i>
-                            <span>Maps</span>
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="sidebar-footer">
-                    <a href="#">
-                        <i class="fa fa-bell"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-envelope"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-cog"></i>
-                        <span class="badge-sonar"></span>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-power-off"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+{% block content %}
 
     <main class="page-content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="form-group col-md-12"><br>
-                    <h2>Manage IP Node</h2>
-                    <div class="form-group col-md-12">
-                        <table class="table table-striped">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>IP</th>
-                                    <th>Remove</th>
-                                </tr>
-                                </thead>
+        <h2>Manage IP Node</h2>
+        <p></p>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="refresh" value="true">
+            <button type="submit" class="btn btn-info">Refresh</button>
+        </form>
+        <p></p>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th class="col align-middle">Sitename</th>
+                <th class="col align-middle">Community</th>
+                <th class="col align-middle">Hostname</th>
+                <th class="col align-middle">Address</th>
+                <th class="col align-middle">SNMP version</th>
+                <th class="col align-middle">Status</th>
+                <th class="col align-middle">#</th>
 
-                                <tbody>
-                                {% for node_ip in result %}
-                                    <tr>
-                                        <td>{{ node_ip.ip }}</td>
-                                        <td>
-                                            <form method="post" action="{% url 'remove' %}">
-                                                {% csrf_token %}
-                                                <input type="submit" value="remove" class="btn btn-swipe">
-                                                <input type="hidden" name="ip" value="{{ node_ip.ip }}">
-                                            </form>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </tr>
+            </thead>
+            <tbody>
+            {% for node_ip in result %}
+                <tr id="node-id-{{ forloop.counter0 }}">
+                    <td class="sitename">{{ node_ip.site_name|default:"-" }}</td>
+                    <td class="snmp_community">{{ node_ip.community }}</td>
+                    <td>{{ node_ip.hostname|default:"-" }}</td>
+                    <td class="ip"><a href="{% url 'node-view' node_ip.ip %}">{{ node_ip.ip }}</a></td>
+                    <td class="snmp_version">{{ node_ip.snmp_version }}</td>
+                    <td>{{ node_ip.alive }}</td>
+                    <td>
+                        <form method="post" action="{% url 'node-destroy' node_ip=node_ip.ip %}">
+                            {% csrf_token %}
+                            <button id="btn-edit" type="button" value="edit"
+                                    class="btn btn-primary btn-warning btn-swipe show-edit fa fa-pencil"
+                                    data-id="{{ forloop.counter0 }}" data-toggle="modal"
+                                    data-trget="#editModal"></button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit Devices information</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="input-group">
+                                                <label class="col-md-3">Community</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" id="updatecommunity" type="text">
+                                            </div>
+                                            <div class="input-group" style="padding-top: 10px">
+                                                <label class="col-md-3">Site name</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control" id="updateSitename" type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <button id="btn-delete" type="submit" data-toggle="modal"
+                                data-trget="#deleteModal" class="btn btn-swipe fa fa-trash-o btn-danger"></button>
+
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Are you sure ?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <p>This node will be delete ?</p>
+                                        <button type="button" class="btn btn-swipe btn-secondary" data-dismiss="modal">
+                                            CANCEL
+                                        </button>
+                                        <form method="post">
+                                            <button type="submit" value="remove" class="btn btn-swipe btn-danger">
+                                                REMOVE
+                                            </button>
+                                            {#                                            <input type="hidden" name="ip" value="{{ node_ip.ip }}">#}
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
     </main>
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js'></script>
-</div>
+{% endblock %}
 
-    <script src="{% static 'discover/disJS.js' %}"></script>
+{% block custom_js %}
+    <script>
+        $('.show-edit').click(function () {
+            let inputElem = $(this);
+            let id = inputElem.attr('data-id');
+            let nodeElem = $('#node-id-' + id);
+            let sitename = nodeElem.find(".sitename").first().html();
+            let snmp_community = nodeElem.find(".snmp_community").first().html();
+            let snmp_version = nodeElem.find(".snmp_version").first().html()
+            let ip = nodeElem.find(".ip").first().html()
 
+            console.log(sitename, snmp_community, snmp_version, ip);
+        });
 
-</body>
-</html>
+        $("#btn-edit").click(function () {
+            $("#editModal").modal('show');
+        });
+
+        $("#btn-delete").click(function () {
+            $("#editModal").modal('show');
+        });
+
+    </script>
+{% endblock %}

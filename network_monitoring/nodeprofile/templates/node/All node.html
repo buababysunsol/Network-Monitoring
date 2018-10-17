@@ -1,0 +1,56 @@
+{% extends 'network_monitoring/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="main page-content">
+        <h2>All Node</h2><br><br>
+        <form method="get">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Search</span>
+                </div>
+                <input class="form-control" type="text" aria-label="Default"
+                       aria-describedby="inputGroup-sizing-default">
+            </div>
+            <br><br>
+
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Sitename</th>
+                    <th scope="col">Hostname</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Community</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">#</th>
+                </tr>
+                </thead>
+                {% for node_ip in result %}
+                    <tbody>
+                    <tr>
+                        <td>{{ node_ip.site_name|default:"-" }}</td>
+                        <td>{{ node_ip.hostname|default:"-" }}</td>
+                        <td>{{ node_ip.ip }}</td>
+                        <td>{{ node_ip.community }}</td>
+                        <td>{{ node_ip.alive }}</td>
+                        <td>
+                            <form method="post" action="{% url 'node-profile' %}">
+                                {% csrf_token %}
+                                <button type="button" value="info" class="btn btn-info">See more</button>
+                                <input type="hidden" name="profile" value="detail">
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+
+        </form>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+        $('#')
+    </script>
+{% endblock %}
